@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
-function retrieveData(){
-  fetch("https://fetch-hiring.s3.amazonaws.com/hiring.json", {
-      method: 'GET',
-      credentials: 'same-origin',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-      console.table(response)
-    })
-}
 
 function App() {
-  retrieveData();
+ let data;
+
+  useEffect(() =>{
+    const proxyURL = "https://cors-anywhere.herokuapp.com/";
+    const url = "https://fetch-hiring.s3.amazonaws.com/hiring.json";
+    fetch(proxyURL+url, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Accept': 'include' 
+        }
+      })
+      .then(res => {
+        return res.json()
+      })
+      .then(response => {
+        console.table(response)
+        data = response
+      })
+      .catch(e => {
+        alert("An error occured while fetching data");
+      })
+});
+
   return (
     <div className="App">
       <header className="App-header">
