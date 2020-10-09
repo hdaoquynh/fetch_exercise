@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
- let data;
+ const [data, setData] = useState([]);
 
   useEffect(() =>{
     const proxyURL = "https://cors-anywhere.herokuapp.com/";
@@ -21,7 +21,7 @@ function App() {
       })
       .then(response => {
         console.table(response)
-        data = response
+        setData(response)
       })
       .catch(e => {
         alert("An error occured while fetching data");
@@ -30,20 +30,32 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <table> 
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>listId</th>
+            <th>name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            data.map(d => {
+              if(d.name !== "" && d.name !== null ){
+                return(
+                  <tr key={d.id}>
+                    <td>{d.id}</td>
+                    <td>{d.listId}</td>
+                    <td>{d.name}</td>
+                  </tr>
+                )
+              
+              
+            }
+          })
+          }
+      </tbody>
+      </table>
     </div>
   );
 }
